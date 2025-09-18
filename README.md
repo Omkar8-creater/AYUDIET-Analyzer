@@ -1,4 +1,4 @@
-# NutriAyurveda Analyzer
+# AYUDIET Analyzer
 
 Identify a food from an image and show nutrition + Ayurvedic insights.
 
