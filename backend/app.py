@@ -68,6 +68,12 @@ class AnalyzeResponse(BaseModel):
     top_predictions: Optional[List[Dict[str, Any]]] = None
 
 
+# ✅ Root test route
+@app.get("/")
+def root():
+    return {"message": "Backend is Working........"}
+
+
 @app.get("/health")
 def health():
     return {
@@ -82,7 +88,6 @@ def health():
 def foods():
     # Return a deduped sorted list of known foods to help the UI suggest names
     keys = set(NUTRITION_DATA.keys()) | set(AYURVEDA_MAP.keys())
-    # Only base names (avoid duplicates due to aliases mapping to the same entry)
     return {"foods": sorted(keys)}
 
 
@@ -97,7 +102,6 @@ def init_model():
     model.eval()
     preprocess = models.MobileNet_V3_Small_Weights.DEFAULT.transforms()
     transform = preprocess
-    # Fallback to imagenet labels bundled with torchvision
     try:
         import torchvision
         idx_to_label = torchvision.models.MobileNet_V3_Small_Weights.DEFAULT.meta["categories"]
@@ -138,18 +142,15 @@ async def analyze(
                 for i in range(k):
                     lab = idx_to_label[int(idxs[i])] if idx_to_label else f"class_{int(idxs[i])}"
                     top_predictions.append({"label": lab, "confidence": float(confs[i].item())})
-                # choose top-1 initially
                 predicted_label = top_predictions[0]["label"]
                 confidence = top_predictions[0]["confidence"]
                 source["classifier"] = "mobilenet_v3_small_imagenet"
                 source["top_k"] = top_predictions
         except Exception as e:
-            # Classifier failure shouldn't block the pipeline
             source["classifier_error"] = str(e)
 
     # 3) If classifier missing or generic label, try EXIF and filename hints
     if not predicted_label or predicted_label.startswith("class_"):
-        # Try EXIF string contents for hints
         try:
             exif = getattr(img, "getexif", lambda: None)()
             if exif:
@@ -177,12 +178,13 @@ async def analyze(
                 break
 
     if not predicted_label:
-        # Still unknown
-        raise HTTPException(status_code=422, detail="Could not identify the food item. Try a clearer image or include the name in the filename.")
+        raise HTTPException(
+            status_code=422,
+            detail="Could not identify the food item. Try a clearer image or include the name in the filename.",
+        )
 
-    # Normalize name (map common ImageNet labels to food where possible)
+    # Normalize name
     normalized = predicted_label.lower()
-    # Simple mapping from ImageNet terms to foods
     alias_map = {
         "granny_smith": "apple",
         "banana": "banana",
@@ -191,7 +193,6 @@ async def analyze(
         "pomegranate": "pomegranate",
         "ice_cream": "yogurt",
         "yogurt": "yogurt",
-        # Common ImageNet edible classes
         "orange": "orange",
         "lemon": "lemon",
         "pineapple": "pineapple",
@@ -209,7 +210,6 @@ async def analyze(
     }
     normalized = alias_map.get(normalized.replace(" ", "_"), normalized)
 
-    # If we have multiple predictions, prefer the first that maps to a known item
     if top_predictions:
         for cand in top_predictions:
             raw = cand["label"].lower().replace(" ", "_")
@@ -236,10 +236,8 @@ async def analyze(
 
 
 async def fetch_nutrition(query: str) -> Optional[dict]:
-    # Prefer USDA API if configured
     if FDC_API_KEY:
         try:
-            # Search for the best match
             resp = requests.get(
                 "https://api.nal.usda.gov/fdc/v1/foods/search",
                 params={
@@ -267,21 +265,24 @@ async def fetch_nutrition(query: str) -> Optional[dict]:
                     "serving": food.get("servingSize") and f"{food.get('servingSize')} {food.get('servingSizeUnit','')}".strip(),
                     "nutrients": nutrients,
                 }
-        except Exception as e:
-            # Fall back silently
+        except Exception:
             pass
 
-    # Fallback JSON
     if query in NUTRITION_DATA:
         return NUTRITION_DATA[query]
 
-    # Try simple singularization/pluralization
     if query.endswith("s") and query[:-1] in NUTRITION_DATA:
         return NUTRITION_DATA[query[:-1]]
 
     return None
 
 
+# ✅ Run with python app.py
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app:app", host="0.0.0.0", port=int(os.getenv("PORT", 8000)))
+    uvicorn.run(
+        "app:app",
+        host="0.0.0.0",
+        port=int(os.getenv("PORT", 8000)),
+        reload=True
+    )
