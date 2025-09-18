@@ -1,0 +1,57 @@
+[
+  {
+    "name": "apple",
+    "aliases": ["apples"],
+    "rasa": ["madhura", "amla"],
+    "virya": "shita",
+    "vipaka": "madhura",
+    "dosha_effect": {"vata": "pacifies", "pitta": "pacifies", "kapha": "can_increase"},
+    "gunas": ["laghu", "snigdha"],
+    "season": "autumn",
+    "notes": "Raw apples are light and cooling; cooked apples are gentler for Vata."
+  },
+  {
+    "name": "banana",
+    "aliases": ["bananas", "plantain"],
+    "rasa": ["madhura"],
+    "virya": "shita",
+    "vipaka": "madhura",
+    "dosha_effect": {"vata": "pacifies", "pitta": "pacifies", "kapha": "increases"},
+    "gunas": ["guru", "snigdha"],
+    "season": "year-round",
+    "notes": "Heavier fruit; can aggravate Kapha and Ama if digestion is weak."
+  },
+  {
+    "name": "rice",
+    "aliases": ["white rice", "brown rice"],
+    "rasa": ["madhura"],
+    "virya": "shita",
+    "vipaka": "madhura",
+    "dosha_effect": {"vata": "pacifies", "pitta": "pacifies", "kapha": "neutral"},
+    "gunas": ["laghu", "snigdha"],
+    "season": "year-round",
+    "notes": "Easily digestible; basmati is tridoshic."
+  },
+  {
+    "name": "yogurt",
+    "aliases": ["curd", "dahi"],
+    "rasa": ["amla", "madhura"],
+    "virya": "ushna",
+    "vipaka": "amla",
+    "dosha_effect": {"vata": "pacifies", "pitta": "can_increase", "kapha": "increases"},
+    "gunas": ["guru", "snigdha"],
+    "season": "winter",
+    "notes": "Prefer spiced buttermilk over yogurt; avoid at night per classics."
+  },
+  {
+    "name": "pomegranate",
+    "aliases": ["anar", "punica granatum", "pomegranates"],
+    "rasa": ["madhura", "kashaya", "amla"],
+    "virya": "shita",
+    "vipaka": "madhura",
+    "dosha_effect": {"vata": "balances", "pitta": "pacifies", "kapha": "balances"},
+    "gunas": ["laghu", "ruksha"],
+    "season": "autumn",
+    "notes": "Classically tridoshic; sweet varieties are especially pitta-pacifying. Astringent taste supports kapha balance."
+  }
+]

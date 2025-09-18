@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AYUDIET Analyzer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>NutriAyurveda Analyzer</h1>
+    <p class="subtitle">Identify foods from images and see nutrition + Ayurvedic insights</p>
+
+    <form id="upload-form">
+      <label class="upload-card">
+        <input id="image-input" type="file" accept="image/*" hidden />
+        <span>Choose an image</span>
+      </label>
+  <input id="name-input" type="text" placeholder="Optional: Food name (e.g., banana)" list="foods-list" />
+  <datalist id="foods-list"></datalist>
+      <button type="submit">Analyze</button>
+    </form>
+
+    <div id="preview" class="preview hidden">
+      <img id="preview-img" alt="preview" />
+    </div>
+
+    <div id="result" class="result hidden"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
