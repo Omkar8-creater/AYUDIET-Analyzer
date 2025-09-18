@@ -3,8 +3,8 @@ uvicorn[standard]==0.30.6
 pydantic==2.9.2
 python-multipart==0.0.9
 pillow==10.4.0
-# Optional ML stack (can be heavy). Comment out if not needed.
-torch==2.4.1+cpu; platform_system != 'Windows' and platform_machine == 'x86_64'
-torchvision==0.19.1+cpu; platform_system != 'Windows' and platform_machine == 'x86_64'
-# For Windows CPU users, installing torch via pip wheels is recommended; see README.
 requests==2.32.3
+
+# ML stack (CPU)
+torch==2.4.1
+torchvision==0.19.1
