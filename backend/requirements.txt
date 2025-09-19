@@ -1,5 +1,5 @@
-# Find CPU-only torch packages
---index-url https://download.pytorch.org/whl/cpu
+# Add PyTorch's CPU-only index as an EXTRA source
+--extra-index-url https://download.pytorch.org/whl/cpu
 
 fastapi==0.115.0
 uvicorn[standard]==0.30.6
