@@ -4,6 +4,7 @@ pydantic==2.9.2
 python-multipart==0.0.9
 pillow==10.4.0
 requests==2.32.3
-gunicorn
-torch==2.4.1
-torchvision==0.19.1
+
+# ML stack (CPU) - Updated for compatibility
+torch
+torchvision
